@@ -111,7 +111,7 @@ class RobotNavigationActivity:AppCompatActivity() {
             val item = adapter.getItem(position)
             RobotSdk.instance.navi(item!!,object :OnNaviListener{
                 override fun moveResult(p0: String?) {
-                    showToast("移动完成${p0}")
+                    runOnUiThread { showToast("移动完成${p0}") }
                 }
 
                 override fun messageSendResult(p0: String?) {

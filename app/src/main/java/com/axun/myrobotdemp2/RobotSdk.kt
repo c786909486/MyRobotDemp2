@@ -212,7 +212,7 @@ class RobotSdk private constructor() {
             val position  = positions[currentPositionIndex]
             navi(position, this)
 
-            val msg = "已到达，下个点${JSON.toJSONString(position)}"
+            val msg = "已到达，下个点${currentPositionIndex+1}${JSON.toJSONString(position)}"
             Log.d("RobotSdkLog",msg)
 //            if (BuildConfig.DEBUG){
 //                context?.showToast(msg)
