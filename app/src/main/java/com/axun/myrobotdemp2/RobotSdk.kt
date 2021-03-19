@@ -202,11 +202,12 @@ class RobotSdk private constructor() {
                 currentPositionIndex++
 
             }else{
-                inOrder = false
-                currentPositionIndex--
-                if (currentPositionIndex<=0){
-                    inOrder = true
-                }
+//                inOrder = false
+//                currentPositionIndex--
+//                if (currentPositionIndex<=0){
+//                    inOrder = true
+//                }
+                currentPositionIndex = 0
             }
 
             val position  = positions[currentPositionIndex]
