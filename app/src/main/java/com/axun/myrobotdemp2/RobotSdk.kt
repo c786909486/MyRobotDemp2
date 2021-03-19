@@ -203,6 +203,7 @@ class RobotSdk private constructor() {
             when(msg.what){
                 1->{
                     val position = msg.obj as RobotPosition
+                    Log.d("RobotSdkLog","前往下个点${JSON.toJSONString(position)}")
                     navi(position, continuNaviListener)
 
                 }
@@ -252,12 +253,13 @@ class RobotSdk private constructor() {
 
             val position  = positions[currentPositionIndex]
 
-            Handler().postDelayed(Runnable {
-                val message = Message()
-                message.what = 1
-                message.obj= position
-                handler.sendMessage(message)
-            },200)
+//            Handler().postDelayed(Runnable {
+//
+//            },200)
+            val message = Message()
+            message.what = 1
+            message.obj= position
+            handler.sendMessage(message)
             val msg = "已到达，下个点${currentPositionIndex+1}${JSON.toJSONString(position)}"
             Log.d("RobotSdkLog",msg)
 //            if (BuildConfig.DEBUG){
