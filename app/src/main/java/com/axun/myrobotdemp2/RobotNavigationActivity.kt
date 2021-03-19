@@ -23,10 +23,12 @@ class RobotNavigationActivity:AppCompatActivity() {
         val positionsStr = SPUtils.getStringSp(this,"positions")
         if (!positionsStr.isNullOrEmpty()){
             positions = JSON.parseArray(positionsStr,RobotPosition::class.java)
+            adapter.setNewData(positions)
         }
     }
 
     private fun initView(){
+
 
         rv_positions.layoutManager = LinearLayoutManager(this)
         rv_positions.adapter = adapter
@@ -57,12 +59,22 @@ class RobotNavigationActivity:AppCompatActivity() {
         }
 
         btn_get_position.setOnClickListener {
+//            if (BuildConfig.DEBUG){
+//                val position = RobotPosition()
+//                position.x = 0f
+//                position.y = 1f
+//                position.z = 3f
+//                position.rotation = 4f
+//                positions.add(position)
+//                adapter.setNewData(positions)
+//                SPUtils.putStringSp(this,"positions",JSON.toJSONString(positions))
+//            }
             RobotSdk.instance.getCurrentPosition{
                 runOnUiThread {
                     showToast(JSON.toJSONString(it))
                     if (!positions.contains(it)){
                         positions.add(it)
-                        adapter.notifyDataSetChanged()
+                        adapter.setNewData(positions)
                         SPUtils.putStringSp(this,"positions",JSON.toJSONString(positions))
                     }else{
                         showToast("当前坐标已记录")
