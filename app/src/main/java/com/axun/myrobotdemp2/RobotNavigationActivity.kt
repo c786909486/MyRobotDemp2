@@ -58,6 +58,7 @@ class RobotNavigationActivity:AppCompatActivity() {
 
         btn_get_position.setOnClickListener {
             RobotSdk.instance.getCurrentPosition{
+                showToast(JSON.toJSONString(it))
                 if (!positions.contains(it)){
                     positions.add(it)
                     adapter.notifyDataSetChanged()
