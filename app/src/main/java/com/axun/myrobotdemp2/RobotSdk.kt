@@ -237,7 +237,7 @@ class RobotSdk private constructor() {
             if (!isInNavi){
                 return
             }
-            if (currentPositionIndex<positions.size-1 ){
+            if (currentPositionIndex<positions.size ){
 //                inOrder = true
                 currentPositionIndex++
 
