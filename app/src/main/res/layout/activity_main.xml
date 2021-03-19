@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_init"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取授权"
+        />
+
+    <TextView
+        android:id="@+id/tv_sdk_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_light"/>
+
+    <EditText
+        android:id="@+id/ed_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入ip地址"
+        android:inputType="numberDecimal|number"
+        android:digits="1234567890."/>
+
+    <EditText
+        android:id="@+id/ed_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入端口"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/btn_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="连接机器人"/>
+    <Button
+        android:id="@+id/btn_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:text="设置导航"/>
+</LinearLayout>
