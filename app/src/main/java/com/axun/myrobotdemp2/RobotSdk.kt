@@ -1,6 +1,9 @@
 package com.axun.myrobotdemp2
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONException
@@ -36,6 +39,7 @@ class RobotSdk private constructor() {
         this.context = context
         this.apiKey = apiKey
         this.userSecret = userSecret
+        continuNaviListener = ContinuNaviListener(handler)
     }
 
     /**
@@ -177,6 +181,7 @@ class RobotSdk private constructor() {
     private var currentPositionIndex = 0
     private var isInNavi = false
 
+
     fun continuousNavi(positions: List<RobotPosition>){
         isInNavi = true
         if (positions.isNullOrEmpty()){
@@ -192,13 +197,48 @@ class RobotSdk private constructor() {
 
     private var inOrder = true
 
-    private var continuNaviListener = object :OnNaviListener{
+    private var handler =object :Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when(msg.what){
+                1->{
+                    val position = msg.obj as RobotPosition
+                    navi(position, continuNaviListener)
+
+                }
+            }
+        }
+    }
+
+    private lateinit var continuNaviListener : ContinuNaviListener
+
+
+
+
+    fun moveForward(){
+        CsjRobot.getInstance().action.moveForward()
+    }
+
+    fun moveLeft(){
+        CsjRobot.getInstance().action.moveLeft()
+    }
+
+    fun moveRight(){
+        CsjRobot.getInstance().action.moveRight()
+    }
+
+    fun moveBack(){
+        CsjRobot.getInstance().action.moveBack()
+    }
+
+
+    inner class ContinuNaviListener(private val handler: Handler):OnNaviListener{
         override fun moveResult(p0: String?) {
             if (!isInNavi){
                 return
             }
-            if (currentPositionIndex<positions.size-1 && inOrder){
-                inOrder = true
+            if (currentPositionIndex<positions.size-1 ){
+//                inOrder = true
                 currentPositionIndex++
 
             }else{
@@ -211,7 +251,11 @@ class RobotSdk private constructor() {
             }
 
             val position  = positions[currentPositionIndex]
-            navi(position, this)
+            val message = Message()
+            message.what = 1
+            message.obj= position
+            handler.sendMessage(message)
+
 
             val msg = "已到达，下个点${currentPositionIndex+1}${JSON.toJSONString(position)}"
             Log.d("RobotSdkLog",msg)
@@ -234,21 +278,5 @@ class RobotSdk private constructor() {
 
     }
 
-    fun moveForward(){
-        CsjRobot.getInstance().action.moveForward()
-    }
-
-    fun moveLeft(){
-        CsjRobot.getInstance().action.moveLeft()
-    }
-
-    fun moveRight(){
-        CsjRobot.getInstance().action.moveRight()
-    }
-
-    fun moveBack(){
-        CsjRobot.getInstance().action.moveBack()
-    }
-
-
 }
+
