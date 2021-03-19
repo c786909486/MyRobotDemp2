@@ -1,6 +1,7 @@
 package com.axun.myrobotdemp2
 
 import android.content.Context
+import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONException
 import com.alibaba.fastjson.JSONObject
@@ -139,9 +140,11 @@ class RobotSdk private constructor() {
      **/
     fun navi(position: RobotPosition, listener: OnNaviListener? = null){
         val json = JSON.toJSONString(position)
+        isInNavi = true
         CsjRobot.getInstance().action.navi(json, object : OnNaviListener {
             override fun moveResult(p0: String?) {
                 listener?.moveResult(p0)
+                isInNavi = false
             }
 
             override fun messageSendResult(p0: String?) {
@@ -150,6 +153,7 @@ class RobotSdk private constructor() {
 
             override fun cancelResult(p0: String?) {
                 listener?.cancelResult(p0)
+                isInNavi = false
             }
 
             override fun goHome() {
@@ -159,6 +163,11 @@ class RobotSdk private constructor() {
         })
     }
 
+    fun cancelNavi(listener: OnNaviListener){
+        CsjRobot.getInstance().action.cancelNavi(listener)
+        isInNavi = false
+    }
+
     /**
      * @Description 连续导航
      * @Param
@@ -166,7 +175,10 @@ class RobotSdk private constructor() {
      **/
     private var positions:List<RobotPosition> = ArrayList()
     private var currentPositionIndex = 0
+    private var isInNavi = false
+
     fun continuousNavi(positions: List<RobotPosition>){
+        isInNavi = true
         if (positions.isNullOrEmpty()){
             context?.showToast("传入的坐标点列表为空")
             return
@@ -177,17 +189,38 @@ class RobotSdk private constructor() {
         navi(position, continuNaviListener)
     }
 
+
+    private var inOrder = true
+
     private var continuNaviListener = object :OnNaviListener{
         override fun moveResult(p0: String?) {
-            if (currentPositionIndex<positions.size-1){
+            if (!isInNavi){
+                return
+            }
+            if (currentPositionIndex<positions.size-1 && inOrder){
+                inOrder = true
                 currentPositionIndex++
-                val position  = positions[currentPositionIndex]
-                navi(position, this)
+
+            }else{
+                inOrder = false
+                currentPositionIndex--
+                if (currentPositionIndex<=0){
+                    inOrder = true
+                }
+            }
+
+            val position  = positions[currentPositionIndex]
+            navi(position, this)
+
+            val msg = "已到达，下个点${JSON.toJSONString(position)}"
+            Log.d("RobotSdkLog",msg)
+            if (BuildConfig.DEBUG){
+                context?.showToast(msg)
             }
         }
 
         override fun messageSendResult(p0: String?) {
-
+            Log.d("RobotSdkLog","")
         }
 
         override fun cancelResult(p0: String?) {

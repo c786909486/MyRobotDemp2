@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
 import com.alibaba.fastjson.JSON
+import com.csjbot.coshandler.listener.OnNaviListener
 import kotlinx.android.synthetic.main.activity_robot_navigation.*
 
 /**
@@ -83,9 +84,47 @@ class RobotNavigationActivity:AppCompatActivity() {
             }
         }
 
+        btn_stop_navi.setOnClickListener {
+            RobotSdk.instance.cancelNavi(object :OnNaviListener{
+                override fun moveResult(p0: String?) {
+
+                }
+
+                override fun messageSendResult(p0: String?) {
+
+                }
+
+                override fun cancelResult(p0: String?) {
+                    showToast("停止巡航，${p0}")
+                }
+
+                override fun goHome() {
+
+                }
+
+            })
+        }
+
         adapter.setOnItemClickListener { _, view, position ->
             val item = adapter.getItem(position)
-            RobotSdk.instance.navi(item!!)
+            RobotSdk.instance.navi(item!!,object :OnNaviListener{
+                override fun moveResult(p0: String?) {
+                    showToast("移动完成${p0}")
+                }
+
+                override fun messageSendResult(p0: String?) {
+
+                }
+
+                override fun cancelResult(p0: String?) {
+
+                }
+
+                override fun goHome() {
+                    showToast("返回充电桩")
+                }
+
+            })
         }
 
         adapter.setOnItemLongClickListener { _, view, position ->
