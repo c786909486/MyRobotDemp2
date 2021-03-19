@@ -251,12 +251,13 @@ class RobotSdk private constructor() {
             }
 
             val position  = positions[currentPositionIndex]
-            val message = Message()
-            message.what = 1
-            message.obj= position
-            handler.sendMessage(message)
 
-
+            Handler().postDelayed(Runnable {
+                val message = Message()
+                message.what = 1
+                message.obj= position
+                handler.sendMessage(message)
+            },200)
             val msg = "已到达，下个点${currentPositionIndex+1}${JSON.toJSONString(position)}"
             Log.d("RobotSdkLog",msg)
 //            if (BuildConfig.DEBUG){
@@ -269,7 +270,7 @@ class RobotSdk private constructor() {
         }
 
         override fun cancelResult(p0: String?) {
-
+            Log.d("RobotSdkLog","")
         }
 
         override fun goHome() {

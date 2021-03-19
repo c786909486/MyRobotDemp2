@@ -60,16 +60,7 @@ class RobotNavigationActivity:AppCompatActivity() {
         }
 
         btn_get_position.setOnClickListener {
-//            if (BuildConfig.DEBUG){
-//                val position = RobotPosition()
-//                position.x = 0f
-//                position.y = 1f
-//                position.z = 3f
-//                position.rotation = 4f
-//                positions.add(position)
-//                adapter.setNewData(positions)
-//                SPUtils.putStringSp(this,"positions",JSON.toJSONString(positions))
-//            }
+
             RobotSdk.instance.getCurrentPosition{
                 runOnUiThread {
                     showToast(JSON.toJSONString(it))
