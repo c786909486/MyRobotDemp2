@@ -95,7 +95,9 @@ class RobotNavigationActivity:AppCompatActivity() {
                 }
 
                 override fun cancelResult(p0: String?) {
-                    showToast("停止巡航，${p0}")
+                    runOnUiThread {
+                        showToast("停止巡航，${p0}")
+                    }
                 }
 
                 override fun goHome() {

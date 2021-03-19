@@ -214,9 +214,9 @@ class RobotSdk private constructor() {
 
             val msg = "已到达，下个点${JSON.toJSONString(position)}"
             Log.d("RobotSdkLog",msg)
-            if (BuildConfig.DEBUG){
-                context?.showToast(msg)
-            }
+//            if (BuildConfig.DEBUG){
+//                context?.showToast(msg)
+//            }
         }
 
         override fun messageSendResult(p0: String?) {
