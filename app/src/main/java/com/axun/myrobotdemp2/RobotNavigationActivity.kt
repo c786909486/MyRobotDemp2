@@ -58,13 +58,15 @@ class RobotNavigationActivity:AppCompatActivity() {
 
         btn_get_position.setOnClickListener {
             RobotSdk.instance.getCurrentPosition{
-                showToast(JSON.toJSONString(it))
-                if (!positions.contains(it)){
-                    positions.add(it)
-                    adapter.notifyDataSetChanged()
-                    SPUtils.putStringSp(this,"positions",JSON.toJSONString(positions))
-                }else{
-                    showToast("当前坐标已记录")
+                runOnUiThread {
+                    showToast(JSON.toJSONString(it))
+                    if (!positions.contains(it)){
+                        positions.add(it)
+                        adapter.notifyDataSetChanged()
+                        SPUtils.putStringSp(this,"positions",JSON.toJSONString(positions))
+                    }else{
+                        showToast("当前坐标已记录")
+                    }
                 }
             }
         }
