@@ -37,7 +37,7 @@ class RobotNavigationActivity:AppCompatActivity() {
         }
 
         btn_forward.setOnClickListener {
-            RobotSdk.instance.moveRight()
+            RobotSdk.instance.moveForward()
         }
 
         btn_right.setOnClickListener {

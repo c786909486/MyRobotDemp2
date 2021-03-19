@@ -62,10 +62,10 @@ class MainActivity : AppCompatActivity() {
 
         btn_go.setOnClickListener {
             startActivity(Intent(this@MainActivity, RobotNavigationActivity::class.java))
-
         }
 
-        ed_address.setText("192.168.3.15")
+//        ed_address.setText("192.168.3.15")
+        ed_address.setText("127.0.0.1")
         ed_port.setText("60002")
 
         btn_link.setOnClickListener {
