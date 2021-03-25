@@ -30,7 +30,7 @@ class RobotNavigationActivity:AppCompatActivity() {
 
     private fun initView(){
 
-
+        RobotSdk.instance.loadMap()
         rv_positions.layoutManager = LinearLayoutManager(this)
         rv_positions.adapter = adapter
         adapter.setNewData(positions)
@@ -51,13 +51,36 @@ class RobotNavigationActivity:AppCompatActivity() {
             RobotSdk.instance.moveBack()
         }
 
-        btn_save_map.setOnClickListener {
-            RobotSdk.instance.saveMap()
+        btn_go_home.setOnClickListener {
+            RobotSdk.instance.goHome(object :OnNaviListener{
+                override fun moveResult(p0: String?) {
+
+                }
+
+                override fun messageSendResult(p0: String?) {
+
+                }
+
+                override fun cancelResult(p0: String?) {
+
+                }
+
+                override fun goHome() {
+                    runOnUiThread {
+                        showToast("返回充电桩")
+                    }
+                }
+
+            })
         }
 
-        btn_load_map.setOnClickListener {
-            RobotSdk.instance.loadMap()
-        }
+//        btn_save_map.setOnClickListener {
+//            RobotSdk.instance.saveMap()
+//        }
+//
+//        btn_load_map.setOnClickListener {
+//            RobotSdk.instance.loadMap()
+//        }
 
         btn_get_position.setOnClickListener {
 
@@ -122,6 +145,7 @@ class RobotNavigationActivity:AppCompatActivity() {
 
         adapter.setOnItemLongClickListener { _, view, position ->
             adapter.remove(position)
+            SPUtils.putStringSp(this,"positions",JSON.toJSONString(positions))
             showToast("已删除该坐标点")
             true
         }

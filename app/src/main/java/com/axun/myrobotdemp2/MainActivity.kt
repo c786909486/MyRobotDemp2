@@ -42,22 +42,11 @@ class MainActivity : AppCompatActivity() {
 
     private var hasPermission = false
     private fun initView(){
+        ed_address.setText("127.0.0.1")
+        ed_port.setText("60002")
+        request()
         btn_init.setOnClickListener {
-            RobotSdk.instance.authentication(object : OnAuthenticationListener {
-                override fun success() {
-                    showToast("授权成功")
-                    runOnUiThread {
-                        tv_sdk_status.text = "授权成功"
-                        hasPermission = true
-                    }
-                }
-
-                override fun error() {
-                    showToast("授权失败")
-                    tv_sdk_status.text = "授权失败"
-                }
-
-            })
+           request()
         }
 
         btn_go.setOnClickListener {
@@ -65,8 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        ed_address.setText("192.168.3.15")
-        ed_address.setText("127.0.0.1")
-        ed_port.setText("60002")
+
 
         btn_link.setOnClickListener {
             if (!hasPermission){
@@ -75,6 +63,27 @@ class MainActivity : AppCompatActivity() {
             }
             initSdk()
         }
+    }
+
+    private fun request(){
+        RobotSdk.instance.authentication(object : OnAuthenticationListener {
+            override fun success() {
+                showToast("授权成功")
+                runOnUiThread {
+                    tv_sdk_status.text = "授权成功"
+                    hasPermission = true
+                    runOnUiThread {
+                        initSdk()
+                    }
+                }
+            }
+
+            override fun error() {
+                showToast("授权失败")
+                tv_sdk_status.text = "授权失败"
+            }
+
+        })
     }
 
     private fun initSdk(){

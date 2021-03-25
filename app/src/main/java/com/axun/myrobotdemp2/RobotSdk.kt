@@ -168,6 +168,7 @@ class RobotSdk private constructor() {
     }
 
     fun cancelNavi(listener: OnNaviListener){
+//        positions.clear()
         CsjRobot.getInstance().action.cancelNavi(listener)
         isInNavi = false
     }
@@ -177,13 +178,14 @@ class RobotSdk private constructor() {
      * @Param
      * @return
      **/
-    private var positions:List<RobotPosition> = ArrayList()
+    private var positions:MutableList<RobotPosition> = ArrayList()
     private var currentPositionIndex = 0
     private var isInNavi = false
 
 
-    fun continuousNavi(positions: List<RobotPosition>){
+    fun continuousNavi(positions: MutableList<RobotPosition>){
         isInNavi = true
+        currentPositionIndex = 0
         if (positions.isNullOrEmpty()){
             context?.showToast("传入的坐标点列表为空")
             return
@@ -192,6 +194,7 @@ class RobotSdk private constructor() {
 
         val position  = positions[currentPositionIndex]
         navi(position, continuNaviListener)
+        context?.showToast("开始巡航，共${positions.size}个巡航点")
     }
 
 
@@ -230,6 +233,10 @@ class RobotSdk private constructor() {
 
     fun moveBack(){
         CsjRobot.getInstance().action.moveBack()
+    }
+
+    fun goHome(listener: OnNaviListener){
+        CsjRobot.getInstance().action.goHome(listener)
     }
 
 
