@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-
+        showToast("申请权限")
         if (PermissionRequest.lacksPermissions(this, permissions)) {
             PermissionRequest.requestAll(this, object : PermissionRequest.OnPermissionCallback {
                 override fun onPermissionSuccess() {
